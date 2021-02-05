@@ -1,0 +1,26 @@
+voice shifter
+=============
+
+Shifts someone's voice to make them sound older/younger/manlier/vice versa.
+
+Emits the pitch-adjusted stream live as a PulseAudio sink
+(i.e. a virtual microphone) so Linux users can do stuff like:
+
+Speak into microphone --> voice shifter transforms stream --> virtual
+microphone.
+
+And speak in games etc with a different voice.
+
+The virtual microphone with the altered voice appears in the PulseAudio
+control panel as "null output". There are some outstanding issues with latency
+which might be fixable: I haven't dedicated a lot of time to figuring this
+out.
+
+Dependencies:
+-------------
+
+This is just a frontend to some obscure PulseAudio functions and sox:
+
+pulseaudio pavucontrol sox libsox3 libsox-fmt-pulse
+
+and implicitly Linux. :) (Not tested on FreeBSD etc.)
