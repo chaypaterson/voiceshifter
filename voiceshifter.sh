@@ -17,6 +17,44 @@ sox_pitch_shift () {
     sox -t pulseaudio default -t pulseaudio null pitch $1
 }
 
+print_help () {
+cat << EOF
+Normal mode:
+------------
+
+First, create a virtual microphone with:
+  ./voiceshifter.sh create
+
+Then, shift its frequency with
+  ./voiceshifter.sh shift
+and enter a frequency change when prompted. A recording dialog should now
+appear.
+
+Once active, open PulseAudio Volume Control.
+
+Go to the 'Recording' tab in PulseAudio Volume Control and switch an
+application to 'Monitor of null output'. The application should now be using
+the pitch-shifted virtual microphone.
+
+After cancelling a 'shift' command with Ctrl-C, the virtual microphone should
+be muted. A different pitch shift can be started by running:
+  ./voiceshifter.sh shift
+again.
+
+Once finished, run
+  ./voiceshifter.sh destroy
+to destroy the virtual microphone.
+
+Quick mode:
+-----------
+
+The above can be done in a one-shot mode with the command:
+  ./voiceshifter.sh quick DFREQ
+where DFREQ is, e.g. -550. The command is cancelled (and virtual mic
+destroyed) with Ctrl-C.
+EOF
+}
+
 case $1 in
     create)
         create_sink
@@ -39,32 +77,7 @@ case $1 in
         ;;
 
     help)
-        echo "Normal mode:"
-        echo "First, create a virtual microphone with:"
-        echo "  ./voiceshifter.sh create"
-        echo ""
-        echo "Then, shift its frequency with"
-        echo "  ./voiceshifter.sh shift"
-        echo "and enter a frequency change when prompted."
-        echo ""
-        echo "Once active, open PulseAudio Volume Control."
-        echo "Go to the 'Recording' tab in PulseAudio Volume Control 
-        and switch an application to 'Monitor of null output'. The application
-        should now be using the pitch-shifted virtual microphone."
-        echo ""
-        echo "After cancelling a 'shift' command, the virtual microphone
-        should be muted. A different pitch shift can be started by running"
-        echo "  ./voiceshifter.sh shift"
-        echo "again."
-        echo ""
-        echo "Once finished, run"
-        echo "  ./voiceshifter.sh destroy"
-        echo "to destroy the virtual microphone."
-        echo ""
-        echo "Quick mode:"
-        echo "The above can be done in a one-shot mode with the command:"
-        echo "  ./voiceshifter.sh quick DFREQ"
-        echo "where DFREQ is, e.g. -550."
+        print_help
         ;;
 
     *)
