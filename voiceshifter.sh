@@ -18,7 +18,7 @@ sox_pitch_shift () {
 }
 
 print_help () {
-cat << EOF
+    cat << EOF
 Normal mode:
 ------------
 
