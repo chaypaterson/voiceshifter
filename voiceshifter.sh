@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if sox exists
+if ! command -v sox
+then
+    echo "Sox not found"
+    exit
+fi
+
 create_sink () {
     pactl load-module module-null-sink
     echo $? | sed -n 's/0/Virtual microphone created./p'
@@ -11,7 +18,7 @@ destroy_sink () {
 }
 
 sox_pitch_shift () {
-    echo "Shifting by $1 Hz... Press Ctrl-C to cancel."
+    echo "Shifting by $1 cents... Press Ctrl-C to cancel."
     echo "Go to 'Recording' in PulseAudio Volume Control to switch an
     application to 'Monitor of null output'."
     sox -t pulseaudio default -t pulseaudio null pitch $1
@@ -49,9 +56,9 @@ Quick mode:
 -----------
 
 The above can be done in a one-shot mode with the command:
-  ./voiceshifter.sh quick DFREQ
-where DFREQ is, e.g. -550. The command is cancelled (and virtual mic
-destroyed) with Ctrl-C.
+  ./voiceshifter.sh quick SHIFT
+where SHIFT is the shift in 1/100ths of a semitone, e.g. -550. The command is
+cancelled (and virtual mic destroyed) with Ctrl-C.
 EOF
 }
 
@@ -85,7 +92,7 @@ case $1 in
         echo "  ./voiceshifter.sh create"
         echo "  ./voiceshifter.sh shift"
         echo "  ./voiceshifter.sh destroy"
-        echo "  ./voiceshifter.sh quick DFREQ"
+        echo "  ./voiceshifter.sh quick SHIFT"
         echo "  ./voiceshifter.sh help"
         ;;
 esac
